@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-// import { signIn } from "next-auth/react";
-import { connectDB } from "@/utils/database";
+
 import User from "@/models/user";
+import { connectDB } from "@/utils/database";
 
 const handler = NextAuth({
   providers: [
@@ -13,13 +13,11 @@ const handler = NextAuth({
   ],
   callbacks: {
     async session({ session }) {
-      const sessionUser = await User.findOne({
-        email: session.user.email,
-      });
+      const sessionUser = await User.findOne({ email: session.user.email });
       session.user.id = sessionUser._id.toString();
       return session;
     },
-    async signIn({ profile }) {
+    async signIn({  account, profile, user, credentials }) {
       try {
         await connectDB();
         const userExists = await User.findOne({ email: profile.email });
@@ -30,10 +28,13 @@ const handler = NextAuth({
             image: profile.picture,
           });
         }
+        return true;
       } catch (error) {
-        console.log(error);
+        console.log("Error checking if user exists: ", error.message);
+        return false;
       }
     },
   },
 });
+
 export { handler as GET, handler as POST };

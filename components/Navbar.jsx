@@ -8,6 +8,7 @@ const Navbar = () => {
   const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
+  
   useEffect(() => {
     const setUpProviders = async () => {
       const response = await getProviders();
