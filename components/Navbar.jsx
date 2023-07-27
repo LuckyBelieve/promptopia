@@ -17,6 +17,7 @@ const Navbar = () => {
     };
     setUpProviders();
   }, []);
+
   return (
     <nav className="flex-between w-full mb-16 pt-3">
       <Link href={"/"} className="flex gap-2 flex-center">
@@ -33,7 +34,7 @@ const Navbar = () => {
         {session?.user ? (
           <div className="flex gap-3 md:gap-5">
             <Link href={"/create-prompt"} className="black_btn">
-              Create Post
+              Create Prompt
             </Link>
             <button type="button" onClick={signOut} className="outline_btn">
               signOut
